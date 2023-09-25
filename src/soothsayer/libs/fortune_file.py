@@ -9,10 +9,12 @@ from pathlib import Path
 from logging import warn, debug
 from random import randint
 import struct
+import re
 from pprint import pp
 
 
 DEFAULT_FORTUNE_PATH = '/usr/share/games/fortunes'
+MAX_TRIES = 1000
 
 
 class FortuneFileError(BaseException):
@@ -78,19 +80,28 @@ class FortuneFile:
             raise FortuneFileError
 
     def get_random(self, opts):
-        for i in range(1, 10):
+        fortune = None
+        for i in range(1, MAX_TRIES):
             try:
                 num = randint(1, self.length)
                 fortunes_all = self.data_path.read_bytes()
-                print(f'fortunes length: {len(fortunes_all)}')
-                print(f'number of offsets: {self.length} ({len(self.offsets)})')
-                print(f'random number: {num}')
-                print(f'offsets: {self.offsets[num - 1]} - {self.offsets[num] - 2}')
-                print(f'starts with {fortunes_all[self.offsets[num - 1]]}')
-                fortune = fortunes_all[self.offsets[num - 1]:
-                                       self.offsets[num] - 2]
-                pp(fortune)
-                return fortune.decode()
+                debug(f'fortunes length: {len(fortunes_all)}')
+                debug(f'number of offsets: {self.length} ({len(self.offsets)})')
+                debug(f'random number: {num}')
+                debug(
+                    f'offsets: {self.offsets[num - 1]} - {self.offsets[num] - 2}')
+                debug(f'starts with {fortunes_all[self.offsets[num - 1]]}')
+                fortune_bytes = fortunes_all[self.offsets[num - 1]:
+                                             self.offsets[num] - 2]
+                fortune = fortune_bytes.decode()
+                debug(f'fortune: {fortune}')
+                flags = re.I if opts.ignore_case else re.NOFLAG
+                if ((opts.match and not re.match(opts.match, fortune, flags))
+                        or (opts.short and len(fortune) > opts.short_max)
+                        or (opts.long and len(fortune) < opts.short_max)):
+                    continue
+                return fortune
             except UnicodeDecodeError:
                 warn('unicode decode error')
-        return 'No fortune today!'
+        else:
+            return 'No fortune today!'

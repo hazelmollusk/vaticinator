@@ -6,10 +6,13 @@ Contains:
     - FortuneFileError
 """
 from pathlib import Path
-from logging import warn
+from logging import warn, debug
+from random import randint
 import struct
-from enum import Enum
 from pprint import pp
+
+
+DEFAULT_FORTUNE_PATH = '/usr/share/games/fortunes'
 
 
 class FortuneFileError(BaseException):
@@ -20,14 +23,44 @@ class FortuneFile:
     """Interface for fortune-style .dat files"""
 
     def __init__(self, filename=None):
+        debug(f'FortuneFile({filename})')
         self.path = None
-        self._offsets = []
+        self.offsets = []
+        (self.version, self.length,
+         self.longest, self.shortest) = (0, 0, 0, 0)
         if filename is not None:
-            self.load(filename)
+            try:
+                self.load_file(filename)
+            except Exception as e:
+                raise e
+                warn('didnt load')
 
-    def load(self, filename):
-        self.path = filename if isinstance(filename, Path) else Path(filename)
-        if self.path.exists():
+    def __str__(self):
+        return f'FortuneFile({self.path}): {self.length} entries'
+
+    @classmethod
+    def load_path(cls, path):
+        debug(f'load_path({path})')
+        files = []
+        path = Path(path)
+        if not path.exists():
+            pass
+        elif path.is_dir():
+            files = [FortuneFile(p) for p in path.rglob('*.dat')]
+        else:
+            files = [FortuneFile(path)]
+        return files
+
+    @property
+    def data_path(self):
+        return self.path.parent / self.path.stem
+
+    def load_file(self, fn):
+        debug(f'load_file({fn})')
+        self.path = fn if isinstance(fn, Path) else Path(fn)
+        if not self.path.exists() and isinstance(fn, str) and fn.isalnum():
+            self.path = Path(f'{DEFAULT_FORTUNE_PATH}/{fn}.dat')
+        if self.path.exists() and self.data_path.exists():
             try:
                 with self.path.open('rb') as dat:
                     header = struct.unpack('>IIIIIcxxx', dat.read(24))
@@ -37,13 +70,27 @@ class FortuneFile:
                         struct.unpack('>I', dat.read(4))[0]
                         for i in range(self.length + 1)
                         ]
-                    pp(self.offsets)
-            except:     # noqa: E722
-                warn(f'error reading fortune file "{filename}"!')
-                raise FortuneFileError
+            except Exception as e:     # noqa: E722
+                warn(f'error reading fortune file "{fn}"!  {e}')
+                raise FortuneFileError(e)
         else:
-            warn(f'fortune file "{filename}" not found!')
+            warn(f'fortune file "{fn}" not found!')
             raise FortuneFileError
 
-    def get_random(self, options=None):
-        pass
+    def get_random(self, opts):
+        for i in range(1, 10):
+            try:
+                num = randint(1, self.length)
+                fortunes_all = self.data_path.read_bytes()
+                print(f'fortunes length: {len(fortunes_all)}')
+                print(f'number of offsets: {self.length} ({len(self.offsets)})')
+                print(f'random number: {num}')
+                print(f'offsets: {self.offsets[num - 1]} - {self.offsets[num] - 2}')
+                print(f'starts with {fortunes_all[self.offsets[num - 1]]}')
+                fortune = fortunes_all[self.offsets[num - 1]:
+                                       self.offsets[num] - 2]
+                pp(fortune)
+                return fortune.decode()
+            except UnicodeDecodeError:
+                warn('unicode decode error')
+        return 'No fortune today!'

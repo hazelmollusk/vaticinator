@@ -36,10 +36,10 @@ long_description = '{}\n{}'.format(
 
 setup(
     name='soothsayer',
-    version='0.0.1',
-    description='A skeleton template for Python projects.',
+    version='0.0.2',
+    description='Yet another Python fortune implementation',
     long_description=long_description,
-    long_description_content_type='text/x-rst',
+    long_description_content_type='text/x-md',
     license='GPL v2',
     author='Matt Barry',
     author_email='matt@hazelmollusk.org',
@@ -54,17 +54,17 @@ setup(
         # http://pypi.python.org/pypi?%3Aaction=list_classifiers
         'Development Status :: 4 - Beta',
         'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
-        'Intended Audience :: Funny/Weird',
+        'Intended Audience :: System Administrators',
         'Natural Language :: English',
         'Operating System :: POSIX',
         'Programming Language :: Python :: 3.11',
-        'Topic :: Games',
+        'Topic :: Games/Entertainment :: Fortune Cookies',
         ],
     project_urls={
         'webpage': 'https://github.com/hazelmollusk/soothsayer',
         'Documentation': 'https://soothsayer.readthedocs.io/en/latest/',
         'Changelog': 'https://github.com/hazelmollusk/soothsayer/blob/main/CHANGELOG.rst',
-        'Issue Tracker': 'https://github.com/joaomcteixeira/python-project-skeleton/issues',
+        'Issue Tracker': 'https://github.com/hazelmollusk/soothsayer/issues',
         'Discussion Forum': 'https://github.com/hazelmollusk/soothsayer/discussions',
         },
     keywords=[

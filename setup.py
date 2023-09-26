@@ -34,7 +34,7 @@ long_description = read('README.md')
 
 setup(
     name='vaticinator',
-    version='0.0.2-1',
+    version='0.0.2-2',
     description='Yet another Python fortune implementation',
     long_description=long_description,
     long_description_content_type='text/markdown',

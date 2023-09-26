@@ -20,7 +20,7 @@ class Vaticinator:
 
     def __init__(self, cmd=None, params=[], *args, **kwargs):
         self.args = cmd
-        self.opts = None
+        self._opts = None
         self._files = {}
         if params or args or kwargs:
             self.process_options(params, *args, **kwargs)
@@ -32,16 +32,15 @@ class Vaticinator:
         return self.run()
 
     def get_opts(self):
-        if not hasattr(self, '_opts'):
-            self._opts = None
         return self._opts
 
     def set_opts(self, val):
         if val is None:
             return
         if not isinstance(val, Namespace):
-            raise TypeError('Vaticinator.opts must be of type argparse.Namespace'
-                            + f' ({val} is of type {type(val)})')
+            raise TypeError('Vaticinator.opts must be of type '
+                            + f'argparse.Namespace ({val} is of '
+                            + f'type {type(val)})')
         self._opts = val
         if self._opts.verbose:
             getLogger().setLevel(INFO)
@@ -84,11 +83,11 @@ class Vaticinator:
         self.opts = parser.parse_args(args)
         return self.opts
 
-    def process_options(self, params=[], *args, **kwargs):
+    def process_options(self, *args, **kwargs):
         debug('process_options')
         VALID_FLAGS = ('all', 'show_file', 'equal', 'list_files', 'long', 'off',
                        'short', 'ignore_case', 'wait', 'u', 'verbose', 'debug')
-        VALID_ARGS = {'match': str, 'short_max': 160}
+        VALID_ARGS = {'match': str, 'short_max': int}
         for arg in args:
             if arg in VALID_FLAGS and arg not in kwargs:
                 kwargs[arg] = True
@@ -99,6 +98,11 @@ class Vaticinator:
             if (k in VALID_FLAGS and type(v) is not bool) or \
                     (k in VALID_ARGS and type(v) is not VALID_ARGS[k]):
                 warn(f'"{k}" is not valid for option {k}')
+        for flag in VALID_FLAGS:
+            kwargs.setdefault(flag, False)
+        kwargs.setdefault('match', None)
+        kwargs.setdefault('short_max', 160)
+                
         self.opts = Namespace(**kwargs)
         return self.opts
 
@@ -156,6 +160,8 @@ class Vaticinator:
 
     @property
     def fortune(self):
+        if not self.opts:
+            self.process_options()
         total = sum(self.files.values())
         num = randint(0, total - 1)
         debug(f'fortune() file #{num}/{total}')

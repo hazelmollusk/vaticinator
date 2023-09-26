@@ -1,5 +1,5 @@
 """Test main command-line client."""
-from sybil.sybil import main
+from vaticinator.vaticinator import main
 
 
 def test_main():

@@ -3,7 +3,7 @@
 DOCSTRING for first public console interface.
 
 USAGE:
-    sybil [options]
+    vaticinator [options]
 """
 import sys
 import re
@@ -12,11 +12,11 @@ from argparse import ArgumentParser, Namespace
 from random import randint
 from logging import warn, debug, getLogger, WARN, INFO, DEBUG
 from pathlib import Path
-from sybil.libs.fortune_file import FortuneFile, DEFAULT_FORTUNE_PATH
+from vaticinator.libs.fortune_file import FortuneFile, DEFAULT_FORTUNE_PATH
 from pprint import pp
 
 
-class Sybil:
+class Vaticinator:
 
     def __init__(self, cmd=None, params=[], *args, **kwargs):
         self.args = cmd
@@ -40,7 +40,7 @@ class Sybil:
         if val is None:
             return
         if not isinstance(val, Namespace):
-            raise TypeError('Sybil.opts must be of type argparse.Namespace'
+            raise TypeError('Vaticinator.opts must be of type argparse.Namespace'
                             + f' ({val} is of type {type(val)})')
         self._opts = val
         if self._opts.verbose:
@@ -174,7 +174,7 @@ class Sybil:
 
 
 def main(*args, **kwargs):
-    return Sybil(*args, **kwargs).main()
+    return Vaticinator(*args, **kwargs).main()
 
 
 if __name__ == '__main__':

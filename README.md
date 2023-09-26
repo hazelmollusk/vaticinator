@@ -1,6 +1,6 @@
-# sybil(6)
+# vaticinator(6)
 
-Sybil is yet another Python implementation of the
+Vaticinator is yet another Python implementation of the
 ancient and (in)famous `fortune` program from the 
 `bsdgames` package.
 

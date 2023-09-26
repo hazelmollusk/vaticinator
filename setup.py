@@ -34,7 +34,7 @@ long_description = read('README.md')
 
 setup(
     name='sybil',
-    version='0.0.2',
+    version='0.0.2-1',
     description='Yet another Python fortune implementation',
     long_description=long_description,
     long_description_content_type='text/markdown',

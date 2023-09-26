@@ -35,7 +35,7 @@ class FortuneFile:
                 self.load_file(filename)
             except Exception as e:
                 raise e
-                warn('didnt load')
+                warn(f'didnt load: {filename}')
 
     def __str__(self):
         return f'FortuneFile({self.path}): {self.length} entries'

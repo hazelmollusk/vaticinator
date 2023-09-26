@@ -3,7 +3,7 @@
 DOCSTRING for first public console interface.
 
 USAGE:
-    soothsayer [options]
+    sybil [options]
 """
 import sys
 import re
@@ -12,11 +12,11 @@ from argparse import ArgumentParser, Namespace
 from random import randint
 from logging import warn, debug, getLogger, WARN, INFO, DEBUG
 from pathlib import Path
-from soothsayer.libs.fortune_file import FortuneFile, DEFAULT_FORTUNE_PATH
+from sybil.libs.fortune_file import FortuneFile, DEFAULT_FORTUNE_PATH
 from pprint import pp
 
 
-class Soothsayer:
+class Sybil:
 
     def __init__(self, cmd=None, params=[], *args, **kwargs):
         self.args = cmd
@@ -40,7 +40,7 @@ class Soothsayer:
         if val is None:
             return
         if not isinstance(val, Namespace):
-            raise TypeError('Soothsayer.opts must be of type argparse.Namespace'
+            raise TypeError('Sybil.opts must be of type argparse.Namespace'
                             + f' ({val} is of type {type(val)})')
         self._opts = val
         if self._opts.verbose:
@@ -174,7 +174,7 @@ class Soothsayer:
 
 
 def main(*args, **kwargs):
-    return Soothsayer(*args, **kwargs).main()
+    return Sybil(*args, **kwargs).main()
 
 
 if __name__ == '__main__':

@@ -1,5 +1,5 @@
 """Test main command-line client."""
-from soothsayer.soothsayer import main
+from sybil.sybil import main
 
 
 def test_main():

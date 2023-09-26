@@ -1,6 +1,6 @@
 """Performs general tests."""
 import amodule
-from soothsayer.libs import fortune_file as SM
+from sybil.libs import fortune_file as SM
 
 
 def test_amodule():

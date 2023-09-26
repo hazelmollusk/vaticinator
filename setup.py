@@ -33,7 +33,7 @@ long_description = read('README.md')
 
 
 setup(
-    name='soothsayer',
+    name='sybil',
     version='0.0.2',
     description='Yet another Python fortune implementation',
     long_description=long_description,
@@ -41,7 +41,7 @@ setup(
     license='GPL v2',
     author='Matt Barry',
     author_email='matt@hazelmollusk.org',
-    url='https://github.com/hazelmollusk/soothsayer',
+    url='https://github.com/hazelmollusk/sybil',
     packages=find_packages('src'),
     package_dir={'': 'src'},
     py_modules=[splitext(basename(i))[0] for i in glob("src/*.py")],
@@ -59,11 +59,11 @@ setup(
         'Topic :: Games/Entertainment :: Fortune Cookies',
         ],
     project_urls={
-        'webpage': 'https://github.com/hazelmollusk/soothsayer',
-        'Documentation': 'https://soothsayer.readthedocs.io/en/latest/',
-        'Changelog': 'https://github.com/hazelmollusk/soothsayer/blob/main/CHANGELOG.rst',
-        'Issue Tracker': 'https://github.com/hazelmollusk/soothsayer/issues',
-        'Discussion Forum': 'https://github.com/hazelmollusk/soothsayer/discussions',
+        'webpage': 'https://github.com/hazelmollusk/sybil',
+        'Documentation': 'https://sybil.readthedocs.io/en/latest/',
+        'Changelog': 'https://github.com/hazelmollusk/sybil/blob/main/CHANGELOG.rst',
+        'Issue Tracker': 'https://github.com/hazelmollusk/sybil/issues',
+        'Discussion Forum': 'https://github.com/hazelmollusk/sybil/discussions',
         },
     keywords=[
         'fortune', 'games'
@@ -83,7 +83,7 @@ setup(
         ],
     entry_points={
         'console_scripts': [
-            'soothsayer = soothsayer.soothsayer:main'
+            'sybil = sybil.sybil:main'
             ]
         },
     # cmdclass={'build_ext': optional_build_ext},

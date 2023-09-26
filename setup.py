@@ -30,7 +30,7 @@ def read(*names, **kwargs):
 #     )
 
 long_description = '{}\n{}'.format(
-    read('README.rst'),
+    read('README.md'),
     read('CHANGELOG.rst'),
     )
 

@@ -96,7 +96,9 @@ class FortuneFile:
                 fortune = fortune_bytes.decode()
                 debug(f'fortune: {fortune}')
                 flags = re.I if opts.ignore_case else re.NOFLAG
-                if ((opts.match and not re.match(opts.match, fortune, flags))
+                if opts.match:
+                    debug(f'match: {opts.match}')
+                if ((opts.match and not re.search(opts.match, fortune, flags))
                         or (opts.short and len(fortune) > opts.short_max)
                         or (opts.long and len(fortune) < opts.short_max)):
                     continue

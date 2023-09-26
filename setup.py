@@ -29,17 +29,15 @@ def read(*names, **kwargs):
 #     re.sub(':[a-z]+:`~?(.*?)`', r'``\1``', read(join('docs', 'CHANGELOG.rst')))
 #     )
 
-long_description = '{}\n{}'.format(
-    read('README.md'),
-    read('CHANGELOG.rst'),
-    )
+long_description = read('README.md')
+
 
 setup(
     name='soothsayer',
     version='0.0.2',
     description='Yet another Python fortune implementation',
     long_description=long_description,
-    long_description_content_type='text/x-md',
+    long_description_content_type='text/markdown',
     license='GPL v2',
     author='Matt Barry',
     author_email='matt@hazelmollusk.org',

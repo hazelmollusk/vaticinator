@@ -13,3 +13,25 @@ scratching.
 
 Still alpha maturity level, though the majority of
 `fortune` behavior is implemented at the moment.
+
+## Example integration
+
+This is a the code for a Django template tag that
+displays a random fortune inside a template (with
+all the options from the command line available).
+
+This is basically why I created this project.
+
+```
+from django.template import Library
+from vaticinator.vaticinator import Vaticinator
+
+register = Library()
+vaticinator = Vaticinator()
+
+@register.simple_tag
+def random_fortune(**kwargs):
+    vaticinator.set_default_options()
+    vaticinator.process_options(**kwargs)
+    return vaticinator.fortune
+```

@@ -17,11 +17,14 @@ from pprint import pp
 
 
 class Vaticinator:
+    VALID_FLAGS = ('all', 'show_file', 'equal', 'list_files', 'long', 'off',
+                   'short', 'ignore_case', 'wait', 'u', 'verbose', 'debug')
+    VALID_ARGS = {'match': str, 'short_max': int}
 
     def __init__(self, cmd=None, params=[], *args, **kwargs):
         self.args = cmd
-        self._opts = None
         self._files = {}
+        self.set_default_options()
         if params or args or kwargs:
             self.process_options(params, *args, **kwargs)
 
@@ -31,23 +34,36 @@ class Vaticinator:
         self.process_args(args)
         return self.run()
 
-    def get_opts(self):
-        return self._opts
+    def get_options(self):
+        return self._options
 
-    def set_opts(self, val):
+    def set_options(self, val):
         if val is None:
             return
         if not isinstance(val, Namespace):
-            raise TypeError('Vaticinator.opts must be of type '
+            raise TypeError('Vaticinator.options must be of type '
                             + f'argparse.Namespace ({val} is of '
                             + f'type {type(val)})')
-        self._opts = val
-        if self._opts.verbose:
+        self._options = val
+        if self._options.verbose:
             getLogger().setLevel(INFO)
-        if self._opts.debug:
+        if self._options.debug:
             getLogger().setLevel(DEBUG)
 
-    opts = property(get_opts, set_opts)
+    options = property(get_options, set_options)
+
+    def set_default_options(self):
+        kwargs = {'match': None, 'short_max': 160}
+        for flag in self.VALID_FLAGS:
+            kwargs.setdefault(flag, False)
+        self._options = Namespace(**kwargs)
+        return self._options
+
+    def process_log_level(self):
+        if self._options.verbose:
+            getLogger().setLevel(INFO)
+        if self._options.debug:
+            getLogger().setLevel(DEBUG)
 
     def process_args(self, args=None):
         debug('process_args')
@@ -80,31 +96,29 @@ class Vaticinator:
         parser.add_argument('-d', '--debug', action='store_true')
         parser.add_argument('params', metavar='arg', nargs='*',
                             help='[#%%] file/directory/all')
-        self.opts = parser.parse_args(args)
-        return self.opts
+        self.options = parser.parse_args(args)
+        self.process_log_level()
+        return self.options
 
     def process_options(self, *args, **kwargs):
         debug('process_options')
-        VALID_FLAGS = ('all', 'show_file', 'equal', 'list_files', 'long', 'off',
-                       'short', 'ignore_case', 'wait', 'u', 'verbose', 'debug')
-        VALID_ARGS = {'match': str, 'short_max': int}
+
         for arg in args:
-            if arg in VALID_FLAGS and arg not in kwargs:
+            if arg in self.VALID_FLAGS and arg not in kwargs:
                 kwargs[arg] = True
         for k, v in kwargs:
-            if k not in (VALID_FLAGS + VALID_ARGS.keys()):
+            if k not in (self.VALID_FLAGS + self.VALID_ARGS.keys()):
                 warn(f'option "{k}" not recognized!')
                 del kwargs[k]
-            if (k in VALID_FLAGS and type(v) is not bool) or \
-                    (k in VALID_ARGS and type(v) is not VALID_ARGS[k]):
+            if (k in self.VALID_FLAGS and type(v) is not bool) or \
+                    (k in self.VALID_ARGS and type(v) is not self.VALID_ARGS[k]):
                 warn(f'"{k}" is not valid for option {k}')
-        for flag in VALID_FLAGS:
-            kwargs.setdefault(flag, False)
-        kwargs.setdefault('match', None)
-        kwargs.setdefault('short_max', 160)
-                
-        self.opts = Namespace(**kwargs)
-        return self.opts
+
+        for k, v in kwargs:
+            setattr(self.options, k, v)
+
+        self.process_log_level()
+        return self.options
 
     def process_files(self, params):
         debug('process_files')
@@ -124,12 +138,12 @@ class Vaticinator:
             self.process_args(cmd)
         if params or args or kwargs:
             self.process_options(params, *args, **kwargs)
-        self.process_files(self.opts.params)
-        if self.opts.show_file:
+        self.process_files(self.options.params)
+        if self.options.show_file:
             pass
-        elif self.opts.list_files:
+        elif self.options.list_files:
             pass
-        # elif self.opts.version:
+        # elif self.options.version:
         #     pass
         else:
             fortune = self.fortune
@@ -151,7 +165,7 @@ class Vaticinator:
     @cached_property
     def default_files(self):
         def_files = {}
-        def_path = DEFAULT_FORTUNE_PATH if self.opts.all \
+        def_path = DEFAULT_FORTUNE_PATH if self.options.all \
             else f'{DEFAULT_FORTUNE_PATH}/fortunes.dat'
         for next_file in FortuneFile.load_path(def_path):
             def_files[next_file] = 1
@@ -160,7 +174,7 @@ class Vaticinator:
 
     @property
     def fortune(self):
-        if not self.opts:
+        if not self.options:
             self.process_options()
         total = sum(self.files.values())
         num = randint(0, total - 1)
@@ -176,7 +190,7 @@ class Vaticinator:
                     break
                 warn(f'{ff} has no entries!')
 
-        return selected.get_random(self.opts)
+        return selected.get_random(self.options)
 
 
 def main(*args, **kwargs):

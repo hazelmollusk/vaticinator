@@ -29,7 +29,7 @@ def read(*names, **kwargs):
 #     re.sub(':[a-z]+:`~?(.*?)`', r'``\1``', read(join('docs', 'CHANGELOG.rst')))
 #     )
 
-long_description = read('README.md')
+long_description = read('README.rst')
 
 
 setup(

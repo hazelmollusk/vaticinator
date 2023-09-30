@@ -1,2 +1,4 @@
-[main 19e14a9] bumpversion
- 1 file changed, 1 deletion(-)
+build==1.0.3
+packaging==23.1
+pyproject_hooks==1.0.0
+vaticinator @ file:///home/matt/hack/vaticinator

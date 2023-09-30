@@ -48,7 +48,7 @@ project = 'Vaticinator'
 year = '2023'
 author = 'Matt Barry'
 copyright = '{0}, {1}'.format(year, author)
-version = release = '0.0.2'
+version = release = '0.0.4'
 
 pygments_style = 'trac'
 templates_path = ['.']

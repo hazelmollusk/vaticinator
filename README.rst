@@ -1,5 +1,7 @@
-# vaticinator(6) 
-#      v0.0.3
+vaticinator(6)
+==============
+v0.0.3
+======
 
 Vaticinator is yet another Python implementation of the
 ancient and (in)famous `fortune` program from the 
@@ -15,15 +17,15 @@ scratching.
 It is still alpha maturity level, though the majority 
 of `fortune` behavior is implemented at the moment.
 
-## Example integration
+# Example integration
+=====================
 
 This is a the code for a Django template tag that
 displays a random fortune inside a template (with
 all the options from the command line available).
-
 This is basically why I created this project.
 
-```
+```Python
 from django.template import Library
 from vaticinator.vaticinator import Vaticinator
 
@@ -32,7 +34,8 @@ vaticinator = Vaticinator()
 
 @register.simple_tag
 def random_fortune(**kwargs):
-    vaticinator.set_default_options()
-    vaticinator.process_options(**kwargs)
-    return vaticinator.fortune
+	vaticinator.set\_default\_options()
+	vaticinator.process\_options(\*\*kwargs)
+	return vaticinator.fortune
 ```
+

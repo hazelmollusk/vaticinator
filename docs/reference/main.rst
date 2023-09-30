@@ -1,10 +1,10 @@
-sampleproject
+vaticinator
 =============
 
 .. testsetup::
 
-    from sampleproject import *
+    from vaticinator import *
 
-.. automodule:: sampleproject
+.. automodule:: vaticinator
     :members:
 

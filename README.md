@@ -11,8 +11,8 @@ more of the existing ones have this (I looked
 albeit briefly), but it was an itch I didn't mind
 scratching.
 
-Still alpha maturity level, though the majority of
-`fortune` behavior is implemented at the moment.
+It is still alpha maturity level, though the majority 
+of `fortune` behavior is implemented at the moment.
 
 ## Example integration
 

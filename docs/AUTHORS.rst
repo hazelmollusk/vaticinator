@@ -1,9 +1,8 @@
 Authors
 =======
 
-* Joao M. C. Teixeira (`webpage`_, `github`_)
-* Kale Miller (`kmgithub`_)
+* Matt Barry (`webpage`_, `github`_)
 
-.. _webpage: https://bit.ly/joaomcteixeira
-.. _github: https://github.com/joaomcteixeira
+.. _webpage: https://hazelmollusk.org/~matt
+.. _github: https://github.com/zaharazod
 .. _kmgithub: https://github.com/kmiller96

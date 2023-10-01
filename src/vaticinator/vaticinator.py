@@ -10,10 +10,10 @@ import re
 from functools import cached_property
 from argparse import ArgumentParser, Namespace
 from random import randint
-from logging import warn, debug, getLogger, WARN, INFO, DEBUG
-from pathlib import Path
+from logging import warn, debug, getLogger, INFO, DEBUG  # , WARN,
+# from pathlib import Path
+# from pprint import pp
 from vaticinator.libs.fortune_file import FortuneFile, DEFAULT_FORTUNE_PATH
-from pprint import pp
 
 
 class Vaticinator:

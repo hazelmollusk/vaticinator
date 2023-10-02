@@ -34,7 +34,7 @@ long_description = read('README.rst')
 
 setup(
     name='vaticinator',
-    version='0.0.3',
+    version='0.0.11',
     description='Yet another Python fortune implementation',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -83,7 +83,7 @@ setup(
         ],
     entry_points={
         'console_scripts': [
-            'vaticinator = vaticinator.vaticinator:main'
+            'vaticinator = vaticinator.cli:main'
             ]
         },
     # cmdclass={'build_ext': optional_build_ext},

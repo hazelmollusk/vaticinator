@@ -1,4 +1,5 @@
 """Vaticinator"""
 
-__version__ = '0.0.3'
+from .version import __version__
 from .vaticinator import Vaticinator  
+from .fortune_file import *

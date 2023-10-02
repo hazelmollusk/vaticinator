@@ -83,7 +83,7 @@ setup(
         ],
     entry_points={
         'console_scripts': [
-            'vaticinator = vaticinator.vaticinator:main'
+            'vaticinator = vaticinator.cli:main'
             ]
         },
     # cmdclass={'build_ext': optional_build_ext},

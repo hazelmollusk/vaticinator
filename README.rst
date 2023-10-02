@@ -1,6 +1,6 @@
 vaticinator(6)
 ==============
-v0.0.9
+v0.0.10
 ======
 
 Vaticinator is yet another Python implementation of the

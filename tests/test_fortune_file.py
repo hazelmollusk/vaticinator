@@ -1,28 +1,20 @@
-"""Test fortune_file class"""
-from vaticinator.libs import fortune_file as FF
+"""Test fortune_file classes"""
+# flake8: noqa
+from vaticinator.fortune_file import (
+    FortuneFile, FortuneDirectory,
+    FortuneCollection, DEFAULT_FORTUNE_PATH
+    )
 
-
-def test_amodule():
-    """Test amodule.hello()."""
-    amodule.hello()
-
-
-def test_true():
-    """Just asserts True."""
+def test_fc():
+    """Test FortuneCollection."""
+    coll = FortuneCollection()
+    coll.add_path(DEFAULT_FORTUNE_PATH)
+    f = coll.get_random_file()
+    ff = coll.get_random_fortune()
     assert True
 
 
-def test_sampleclass():
-    """Test samplemodule SampleClass true method."""
-    s = SM.SampleClass()
-    assert s.true() is True
-
-
-def test_sampleclass_false():
-    """Test samplemodule SampleClass false classmethod."""
-    assert SM.SampleClass.false() is False
-
-
-def test_undoc_func():
-    """Test the undocumented function."""
-    SM.this_is_and_undocumented_function("some")
+def test_fd():
+    """Just asserts True."""
+    fdir = FortuneDirectory(DEFAULT_FORTUNE_PATH)
+    assert len(fdir.filenames) > 0

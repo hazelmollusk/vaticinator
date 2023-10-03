@@ -1,0 +1,35 @@
+Source: vaticinator
+Section: games
+Priority: optional
+Maintainer: Matt Barry <matt@hazelmollusk.org
+Standards-Version: 3.9.4
+Build-Depends: debhelper (>= 9),
+               dpkg-dev (>= 1.16.1),
+               fortunes-min | fortune-cookie-db
+Vcs-Git: https://github.com/hazelmollusk/vaticinator.git
+Vcs-Browser: https://github.com/hazelmollusk/vaticinator
+
+Package: vaticinator
+Architecture: any
+Replaces: fortune
+Provides: fortune
+Conflicts: fortune
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+         fortunes-min | fortune-cookie-db
+Recommends: fortunes-min | fortune-cookie-db
+Suggests: fortunes,
+          bsdmainutils
+Description: provides fortune cookies on demand
+ The vaticinator package provides a Python reimplemention of the
+ 'fortune' program.  The 'vaticinator' command supports most/all
+ of the functionality of the original; also provided is a
+ library of reusable fortune cookie functionality.  (Below is the
+ description of the 'fortune' package.)
+ .
+ The fortune program displays epigrams, known as fortune cookies,
+ selected randomly from a selection of fortune files.
+ .
+ This package provides the fortune program itself and the programs
+ used for generating the data files. The data files are contained in
+ the fortunes-min and fortunes packages.

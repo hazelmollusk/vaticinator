@@ -9,6 +9,7 @@ from pathlib import Path
 from logging import warn, debug, info
 from random import randint
 from functools import lru_cache
+from collections import UserString
 import struct
 import os
 import re
@@ -16,6 +17,12 @@ import re
 
 DEFAULT_FORTUNE_PATH = '/usr/share/games/fortunes'
 MAX_TRIES = 1000
+
+
+class Fortune(UserString):
+    def __init__(self, init=None, source=None):
+        super().__init__(init)
+        self.source_file = source
 
 
 class FortuneFileError(BaseException):
@@ -140,7 +147,7 @@ class FortuneFile(FortuneObject):
                         or (options.short and len(fortune) > options.short_max)
                         or (options.long and len(fortune) < options.short_max)):
                     continue
-                return fortune
+                return Fortune(fortune, self)
             except UnicodeDecodeError:
                 warn('unicode decode error')
         else:
@@ -171,6 +178,15 @@ class FortuneCollection:
         filenames = list([str(file) for file in self.files])
         debug(f'{self}.filenames files={filenames}')
         return filenames
+
+    def walk_files(self, final=True):
+        all_files = self.files
+        for file in self.files:
+            if isinstance(file, FortuneDirectory):
+                all_files += file.walk_files(False)
+        return sorted(all_files, key=lambda f: f.path) \
+            if final \
+            else all_files
 
     @property
     def length(self):

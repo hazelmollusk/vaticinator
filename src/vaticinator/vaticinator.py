@@ -157,14 +157,18 @@ class Vaticinator:
             self.process_args(cmd)
         if params or args or kwargs:
             self.process_options(params, *args, **kwargs)
+        if self.options.list_files:
+            print('\n'.join([
+                str(f.path) for f
+                in self._sources.walk_files()]))
+            return 0
+        fortune = self.fortune
         if self.options.show_file:
-            pass
-        elif self.options.list_files:
-            pass
+            print(fortune.source_file.path)
+            return 0
         # elif self.options.version:
         #     pass
         else:
-            fortune = self.fortune
             print(fortune)
             return 0
 

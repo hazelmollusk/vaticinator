@@ -34,11 +34,11 @@ long_description = read('README.rst')
 
 setup(
     name='vaticinator',
-    version='0.0.4',
+    version='0.0.5',
     description='Yet another Python fortune implementation',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    license='GPL v2',
+    license='MIT',
     author='Matt Barry',
     author_email='matt@hazelmollusk.org',
     url='https://github.com/hazelmollusk/vaticinator',

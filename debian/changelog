@@ -1,0 +1,5 @@
+PACKAGE (0.0.4) UNRELEASED; urgency=medium
+
+  * Initial Debian release.
+
+ -- Matt Barry <matt@hazelmollusk.org>  Tue, 03 Oct 2023 08:51:05 -0400

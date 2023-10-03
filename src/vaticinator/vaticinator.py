@@ -6,7 +6,7 @@ USAGE:
     
     # python
     from vaticinator import Vaticinator
-    vat = Vacicinator()
+    vat = Vaticinator()
     print(vat.fortune)
 """
 import sys

@@ -1,11 +1,11 @@
 Metadata-Version: 2.1
 Name: vaticinator
-Version: 0.0.4
+Version: 0.0.5
 Summary: Yet another Python fortune implementation
 Home-page: https://github.com/hazelmollusk/vaticinator
 Author: Matt Barry
 Author-email: matt@hazelmollusk.org
-License: GPL v2
+License: MIT
 Project-URL: webpage, https://github.com/hazelmollusk/vaticinator
 Project-URL: Documentation, https://vaticinator.readthedocs.io/en/latest/
 Project-URL: Changelog, https://github.com/hazelmollusk/vaticinator/blob/main/CHANGELOG.rst
@@ -25,7 +25,7 @@ License-File: LICENSE
 
 vaticinator(6)
 ==============
-v0.0.4
+vv0.0.5
 ======
 
 Vaticinator is yet another Python implementation of the

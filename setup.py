@@ -34,7 +34,7 @@ long_description = read('README.rst')
 
 setup(
     name='vaticinator',
-    0.0.5,
+    version='0.0.5',
     description='Yet another Python fortune implementation',
     long_description=long_description,
     long_description_content_type='text/markdown',

@@ -1,3 +1,9 @@
+python-vaticinator (0.0.5.1-1) unstable; urgency=medium
+
+  * small fixes, config files
+
+ -- Matt Barry <matt@hazelmollusk.org>  Thu, 05 Oct 2023 10:57:20 -0400
+
 python-vaticinator (0.0.5-1) unstable; urgency=medium
 
   * new release; --list-files and --show-file work now

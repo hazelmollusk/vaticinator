@@ -1,6 +1,6 @@
 vaticinator(6)
 ==============
-v0.0.6
+v0.0.7
 ======
 
 Vaticinator is yet another Python implementation of the
@@ -33,8 +33,8 @@ This is basically why I created this project::
 
 	@register.simple_tag
 	def random_fortune(**kwargs):
-		vaticinator.set\_default\_options()
-		vaticinator.process\_options(\*\*kwargs)
+		vaticinator.set_default_options()
+		vaticinator.process_options(**kwargs)
 		return vaticinator.fortune
 
 And the template::

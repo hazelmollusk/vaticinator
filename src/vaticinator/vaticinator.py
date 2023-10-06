@@ -124,7 +124,7 @@ class Vaticinator:
             if arg in self.VALID_FLAGS and arg not in kwargs:
                 kwargs[arg] = True
         for k, v in kwargs.items():
-            if k not in (self.VALID_FLAGS + self.VALID_ARGS.keys()):
+            if k not in (self.VALID_FLAGS + tuple(self.VALID_ARGS.keys())):
                 warn(f'option "{k}" not recognized!')
                 del kwargs[k]
             if (k in self.VALID_FLAGS and type(v) is not bool) or \

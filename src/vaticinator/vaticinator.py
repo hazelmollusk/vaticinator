@@ -6,7 +6,7 @@ USAGE:
     
     # python
     from vaticinator import Vaticinator
-    vat = Vacicinator()
+    vat = Vaticinator()
     print(vat.fortune)
 """
 import sys
@@ -123,14 +123,15 @@ class Vaticinator:
         for arg in args:
             if arg in self.VALID_FLAGS and arg not in kwargs:
                 kwargs[arg] = True
-        for k, v in kwargs:
-            if k not in (self.VALID_FLAGS + self.VALID_ARGS.keys()):
+        for k, v in kwargs.items():
+            if k not in (self.VALID_FLAGS + tuple(self.VALID_ARGS.keys())):
                 warn(f'option "{k}" not recognized!')
                 del kwargs[k]
             if (k in self.VALID_FLAGS and type(v) is not bool) or \
                (k in self.VALID_ARGS and type(v) is not self.VALID_ARGS[k]):
                 warn(f'"{k}" is not valid for option {k}')
-        for k, v in kwargs:
+                del kwargs[k]
+        for k, v in kwargs.items():
             setattr(self.options, k, v)
         self.process_log_level()
         self.process_params()
@@ -157,14 +158,18 @@ class Vaticinator:
             self.process_args(cmd)
         if params or args or kwargs:
             self.process_options(params, *args, **kwargs)
+        if self.options.list_files:
+            print('\n'.join([
+                str(f.path) for f
+                in self._sources.walk_files()]))
+            return 0
+        fortune = self.fortune
         if self.options.show_file:
-            pass
-        elif self.options.list_files:
-            pass
+            print(fortune.source_file.path)
+            return 0
         # elif self.options.version:
         #     pass
         else:
-            fortune = self.fortune
             print(fortune)
             return 0
 

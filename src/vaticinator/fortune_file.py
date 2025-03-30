@@ -6,7 +6,7 @@ Contains:
     - FortuneFileError
 """
 from pathlib import Path
-from logging import warn, debug, info
+from logging import warning, debug, info
 from random import randint
 from functools import lru_cache
 from collections import UserString
@@ -110,17 +110,21 @@ class FortuneFile(FortuneObject):
             try:
                 with self.path.open('rb') as dat:
                     header = struct.unpack('>IIIIIcxxx', dat.read(24))
-                    (self._version, self._length,
-                     self._longest, self._shortest) = header[0:4]
+                    (
+                        self._version,
+                        self._length,
+                        self._longest,
+                        self._shortest,
+                    ) = header[:4]
                     self._offsets = [
                         struct.unpack('>I', dat.read(4))[0]
-                        for i in range(self._length + 1)
-                        ]
+                        for _ in range(self._length + 1)
+                    ]
             except Exception as e:     # noqa: E722
-                warn(f'error reading fortune file "{fn}"!  {e}')
-                raise FortuneFileError(e)
+                warning(f'error reading fortune file "{fn}"!  {e}')
+                raise FortuneFileError(e) from e
         else:
-            warn(f'fortune file "{fn}" not found!')
+            warning(f'fortune file "{fn}" not found!')
             raise FortuneFileError
 
     def get_random_fortune(self, options):
@@ -149,7 +153,7 @@ class FortuneFile(FortuneObject):
                     continue
                 return Fortune(fortune, self)
             except UnicodeDecodeError:
-                warn('unicode decode error')
+                warning('unicode decode error')
         else:
             return 'No fortune today!'
 

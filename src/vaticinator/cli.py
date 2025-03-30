@@ -1,4 +1,5 @@
-from vaticinator.vaticinator import Vaticinator
+#!/usr/bin/env python3
+from .vaticinator import Vaticinator
 
 
 def main(*args, **kwargs):

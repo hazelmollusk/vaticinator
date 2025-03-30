@@ -12,16 +12,12 @@ USAGE:
 import sys
 import re
 from argparse import ArgumentParser, Namespace
-from logging import warn, debug, getLogger, INFO, DEBUG, WARN
-# from random import randint
-# import os
-# from functools import cached_property, lru_cache
-# from pathlib import Path
+from logging import warning, debug, getLogger, INFO, DEBUG, WARN
 
-from vaticinator.fortune_file import (
-    # FortuneFile, FortuneDirectory,
+from .fortune_file import (
     FortuneCollection, DEFAULT_FORTUNE_PATH
     )
+from .version import version
 
 
 class Vaticinator:
@@ -112,6 +108,7 @@ class Vaticinator:
                             + 'locale when searching or translating.')
         parser.add_argument('-v', '--verbose', action='store_true')
         parser.add_argument('-d', '--debug', action='store_true')
+        parser.add_argument('-V','--version', action='store_true')
         parser.add_argument('params', metavar='arg', nargs='*',
                             help='[#%%] file/directory/all')
         self.options = parser.parse_args(args)
@@ -125,11 +122,11 @@ class Vaticinator:
                 kwargs[arg] = True
         for k, v in kwargs.items():
             if k not in (self.VALID_FLAGS + tuple(self.VALID_ARGS.keys())):
-                warn(f'option "{k}" not recognized!')
+                warning(f'option "{k}" not recognized!')
                 del kwargs[k]
             if (k in self.VALID_FLAGS and type(v) is not bool) or \
                (k in self.VALID_ARGS and type(v) is not self.VALID_ARGS[k]):
-                warn(f'"{k}" is not valid for option {k}')
+                warning(f'"{k}" is not valid for option {k}')
                 del kwargs[k]
         for k, v in kwargs.items():
             setattr(self.options, k, v)
@@ -148,11 +145,15 @@ class Vaticinator:
             next_weight = None
             next_sym = params.pop(0)
             if m := re.fullmatch(r'([0-9]+)%?', next_sym):
-                next_weight = m.group(0)
+                next_weight = m[0]
                 next_sym = params.pop(0)
             self._sources.add_path(next_sym, next_weight)
 
-    def run(self, cmd=[], params=[], *args, **kwargs):
+    def run(self, cmd=None, params=None, *args, **kwargs):
+        if cmd is None:
+            cmd = []
+        if params is None:
+            params = []
         debug('run')
         if cmd:
             self.process_args(cmd)
@@ -163,15 +164,15 @@ class Vaticinator:
                 str(f.path) for f
                 in self._sources.walk_files()]))
             return 0
+        elif self.options.version:
+            print(f'vaticinator {version}')
+            return 0
+
         fortune = self.fortune
         if self.options.show_file:
             print(fortune.source_file.path)
-            return 0
-        # elif self.options.version:
-        #     pass
-        else:
-            print(fortune)
-            return 0
+        print(fortune)
+        return 0
 
     @property
     def fortune(self):

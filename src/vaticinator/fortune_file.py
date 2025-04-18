@@ -13,7 +13,7 @@ from collections import UserString
 import struct
 import os
 import re
-
+import random
 
 DEFAULT_FORTUNE_PATH = '/usr/share/games/fortunes'
 MAX_TRIES = 1000
@@ -115,7 +115,7 @@ class FortuneFile(FortuneObject):
                     self._offsets = [
                         struct.unpack('>I', dat.read(4))[0]
                         for i in range(self._length + 1)
-                        ]
+                    ]
             except Exception as e:     # noqa: E722
                 warn(f'error reading fortune file "{fn}"!  {e}')
                 raise FortuneFileError(e)
@@ -131,7 +131,8 @@ class FortuneFile(FortuneObject):
                 num = randint(1, self.length)
                 fortunes_all = self.data_path.read_bytes()
                 debug(f'fortunes length: {len(fortunes_all)}')
-                debug(f'number of offsets: {self.length} ({len(self.offsets)})')
+                debug(
+                    f'number of offsets: {self.length} ({len(self.offsets)})')
                 debug(f'random number: {num}')
                 debug(
                     f'offsets: {self.offsets[num - 1]} - {self.offsets[num] - 2}')
@@ -162,7 +163,7 @@ class FortuneCollection:
         return 'FortuneCollection'
 
     def add_path(self, path, weight=None):
-        info(f'{self}.add_path({path}, {weight})')
+        info(f'{self}.add_path({path}.dat, {weight})')
         obj = FortuneObject.get_object(path, weight)
         if obj.length:
             self.files.append(obj)
@@ -197,6 +198,10 @@ class FortuneCollection:
         return ff.get_random_fortune(options) if ff else 'No fortune found'
 
     def get_random_file(self, options):
+        return random.choice(self.files)
+
+    # FIXME:broken
+    def get_random_file_weighted(self, options):
         debug(f'{self}.get_random_file({options}) files: {self.filenames}')
         total_weighted = sum(
             [f.weight for f in self.files if f.weight is not None])
@@ -207,7 +212,7 @@ class FortuneCollection:
         debug({
             'weighted': total_weighted,
             'unweighted': total_unweighted_lines
-            })
+        })
         for f in unweighted:
             f.weight = (f.length / total_unweighted_lines) * \
                 (remaining_pct / 100)
@@ -241,7 +246,7 @@ class FortuneDirectory(FortuneObject, FortuneCollection):
                 self.path / p for p
                 in os.listdir(self.path)
                 if p.endswith('.dat')
-                ]:
+        ]:
             self.add_path(path, weight)
 
     def __str__(self):
@@ -261,7 +266,7 @@ class FortuneDirectory(FortuneObject, FortuneCollection):
                 self.path / p for p
                 in os.listdir(self.path)
                 if p.endswith('.dat')
-                ]:
+        ]:
             yield FortuneObject.get_object(path)
 
     def error(self):
